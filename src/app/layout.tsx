@@ -55,12 +55,14 @@ export default async function RootLayout({
       lang="en"
       suppressHydrationWarning
       className={`${inter.variable} ${poppins.variable} h-full antialiased`}
+      style={{ colorScheme: 'light' }}
     >
       <body className="flex min-h-full flex-col">
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
           enableSystem={false}
+          storageKey="justbin-theme"
           disableTransitionOnChange
         >
           <ScrollProgress />
