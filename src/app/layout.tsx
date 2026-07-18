@@ -20,7 +20,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.AUTH_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(process.env.AUTH_URL ?? "https://just-bin.vercel.app"),
   title: {
     default: "JustBin — Sell Scrap Without Leaving Home",
     template: "%s · JustBin",
@@ -59,7 +59,7 @@ export default async function RootLayout({
       <body className="flex min-h-full flex-col">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem={false}
           disableTransitionOnChange
         >
