@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Auth (NextAuth / Auth.js) ──────────────────────────────────────
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  role          UserRole        @default(USER)
+  accounts      Account[]
+  sessions      Session[]
+  bookings      PickupBooking[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─── Scrap marketplace ──────────────────────────────────────────────
+
+model ScrapCategory {
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  name        String
+  icon        String
+  description String
+  sortOrder   Int         @default(0)
+  items       ScrapItem[]
+}
+
+model ScrapItem {
+  id         String        @id @default(cuid())
+  name       String
+  price      String // display range, e.g. "₹14-16/kg"
+  icon       String
+  sortOrder  Int           @default(0)
+  categoryId String
+  category   ScrapCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COLLECTED
+  CANCELLED
+}
+
+model PickupBooking {
+  id              String        @id @default(cuid())
+  name            String
+  phone           String
+  address         String
+  city            String
+  pincode         String?
+  scrapTypes      String[]
+  estimatedWeight String?
+  pickupDate      DateTime
+  pickupTime      String?
+  notes           String?
+  status          BookingStatus @default(PENDING)
+  userId          String?
+  user            User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([status, pickupDate])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}

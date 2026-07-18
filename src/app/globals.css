@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─── Design tokens ───────────────────────────────────────────────
+   Night mode (default): near-black surfaces, lime → green → teal gradient
+   Light mode: white surfaces, JustBin green primary                 */
+
+:root {
+  --background: #f8faf8;
+  --foreground: #111311;
+  --card: #ffffff;
+  --card-foreground: #111311;
+  --muted: #eef3ee;
+  --muted-foreground: #4f5951;
+  --border: #c5d9c7; /* green-tinted so every border reads as brand */
+  --input: #eef3ee;
+  --primary: #0f5d2a;
+  --primary-foreground: #ffffff;
+  --accent: #047857;
+  --accent-foreground: #ffffff;
+  --ring: #0f5d2a;
+  --brand-lime: #4d7c0f;
+  --brand-green: #0f5d2a;
+  --brand-emerald: #047857;
+  --brand-teal: #0a5f55;
+  --gradient-brand: linear-gradient(
+    100deg,
+    var(--brand-lime) 0%,
+    var(--brand-green) 50%,
+    var(--brand-teal) 100%
+  );
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #090b09;
+  --foreground: #f7faf7;
+  --card: #12160f;
+  --card-foreground: #f7faf7;
+  --muted: #18201a;
+  --muted-foreground: #9fb0a4;
+  --border: #1f2e24; /* green-tinted so every border reads as brand */
+  --input: #18201a;
+  --primary: #0f5d2a;
+  --primary-foreground: #ffffff;
+  --accent: #047857;
+  --accent-foreground: #ffffff;
+  --ring: #0f5d2a;
+  --brand-lime: #4d7c0f;
+  --brand-green: #0f5d2a;
+  --brand-emerald: #047857;
+  --brand-teal: #0a5f55;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ring: var(--ring);
+  --color-brand-lime: var(--brand-lime);
+  --color-brand-green: var(--brand-green);
+  --color-brand-emerald: var(--brand-emerald);
+  --color-brand-teal: var(--brand-teal);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-poppins), var(--font-inter), ui-sans-serif,
+    system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  --animate-accordion-down: accordion-down 0.25s ease-out;
+  --animate-accordion-up: accordion-up 0.25s ease-out;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Film-grain noise texture (inline SVG turbulence) — layered wherever a
+   glow/fade background is used. Visible in BOTH themes. */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.65'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  opacity: 0.35; /* enhanced visibility in light mode */
+  mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+}
+
+.dark .bg-noise {
+  opacity: 0.25; /* enhanced visibility in dark mode */
+}
+
+/* Hairline brand divider — transparent → green → transparent */
+.divider-gradient {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in oklab, var(--brand-green) 55%, transparent),
+    transparent
+  );
+}
+
+/* Short solid gradient accent bar (under section headings) */
+.accent-bar {
+  height: 3px;
+  width: 3.5rem;
+  border-radius: 999px;
+  background-image: var(--gradient-brand);
+}
+
+/* Subtle dot grid, faded toward the bottom — used behind heroes */
+.bg-grid {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--foreground) 7%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom, black 20%, transparent 90%);
+  -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 90%);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+}
+
+/* Brand gradient text — "Leaving Home." / headline accents.
+   The background position drifts slowly for a living shimmer. */
+.text-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--brand-lime) 0%,
+    var(--brand-green) 40%,
+    var(--brand-teal) 70%,
+    var(--brand-lime) 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Brand gradient surface — primary CTA buttons */
+.bg-gradient-brand {
+  background-image: var(--gradient-brand);
+  background-size: 150% 100%;
+  background-position: 0% 0%;
+  transition: background-position 0.4s ease;
+}
+.bg-gradient-brand:hover {
+  background-position: 100% 0%;
+}
+
+/* Soft radial glow used behind hero art */
+.glow-green {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--brand-green) 25%, transparent),
+    transparent
+  );
+}
+.glow-emerald {
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--brand-emerald) 20%, transparent),
+    transparent
+  );
+}
+
+::selection {
+  background: color-mix(in oklab, var(--brand-green) 30%, transparent);
+}
