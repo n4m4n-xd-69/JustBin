@@ -19,7 +19,7 @@ export function BookingFilters() {
   const searchParams = useSearchParams();
   const currentStatus = searchParams.get("status") || "ALL";
   const currentSearch = searchParams.get("search") || "";
-  const searchTimerRef = useRef<NodeJS.Timeout>();
+  const searchTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   function updateFilters(key: string, value: string) {
     const params = new URLSearchParams(searchParams.toString());
