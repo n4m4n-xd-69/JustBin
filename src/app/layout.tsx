@@ -34,12 +34,21 @@ export const metadata: Metadata = {
     "recycling India",
     "waste management",
   ],
+  icons: {
+    icon: [
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/logo.png", type: "image/png" },
+    ],
+    shortcut: "/favicon.png",
+    apple: "/apple-icon.png",
+  },
   openGraph: {
     title: "JustBin — Sell Scrap Without Leaving Home",
     description:
       "Book a doorstep scrap pickup in 30 seconds. Transparent market rates, verified collectors, instant payment.",
     siteName: "JustBin",
     type: "website",
+    images: [{ url: "/logo.png", width: 800, height: 800, alt: "JustBin Logo" }],
   },
 };
 
@@ -54,13 +63,13 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${poppins.variable} h-full antialiased`}
-      style={{ colorScheme: 'light' }}
+      className={`${inter.variable} ${poppins.variable} dark h-full antialiased`}
+      style={{ colorScheme: 'dark' }}
     >
-      <body className="flex min-h-full flex-col">
+      <body className="flex min-h-full flex-col bg-background text-foreground">
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem={false}
           storageKey="justbin-theme"
           disableTransitionOnChange

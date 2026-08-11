@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -147,8 +148,15 @@ export function Hero() {
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                 className="absolute inset-0 flex items-center justify-center"
               >
-                <div className="flex size-64 items-center justify-center rounded-full border border-brand-green/25 bg-card/70 shadow-md shadow-brand-green/5 backdrop-blur">
-                  <Sprout className="size-28 text-brand-green" strokeWidth={1.2} />
+                <div className="relative flex size-72 items-center justify-center rounded-full border-2 border-brand-green/40 bg-card shadow-2xl shadow-brand-green/25 backdrop-blur p-1 overflow-hidden ring-4 ring-brand-green/10">
+                  <Image
+                    src="/logo.png"
+                    alt="JustBin Mascot Logo"
+                    width={320}
+                    height={320}
+                    priority
+                    className="size-full object-cover rounded-full transition-transform duration-700 hover:scale-105"
+                  />
                 </div>
               </motion.div>
               <motion.div

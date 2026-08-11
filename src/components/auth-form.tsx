@@ -17,6 +17,7 @@ import {
   type RegisterInput,
 } from "@/lib/validations";
 import { loginUser, registerUser } from "@/app/actions/auth";
+import { Logo } from "@/components/logo";
 
 type Mode = "login" | "register";
 
@@ -52,6 +53,9 @@ export function AuthForm({ mode }: { mode: Mode }) {
 
   return (
     <Card className="p-6 sm:p-10">
+      <div className="mb-6 flex items-center justify-between">
+        <Logo />
+      </div>
       <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
         {isLogin ? "Welcome back" : "Create your account"}
       </h1>
